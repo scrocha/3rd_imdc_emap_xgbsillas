@@ -36,7 +36,9 @@ O primeiro bloco de variáveis descreve memória local recente da série de caso
 
 $$
 cases\_roll\_mean\_m_{i,c}=\frac{1}{m}\sum_{r=0}^{m-1}Y_{i,c-r},
-\qquad
+$$
+
+$$
 cases\_roll\_max\_m_{i,c}=\max_{0\leq r<m}Y_{i,c-r}.
 $$
 
