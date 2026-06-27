@@ -33,11 +33,13 @@ onde `Z` representa covariáveis climáticas, oceânicas, espaciais, populaciona
 
 O primeiro bloco de variáveis descreve memória local recente da série de casos. Para cada localidade, a pipeline calcula defasagens semanais `cases_lag_k`, com $k \in \{1,2,3,4,6,8,12,26,52\}$, e estatísticas móveis de média e máximo para janelas de 4, 8 e 12 semanas. Em notação, para uma janela `m`,
 
+
 $$
-\text{cases\_roll\_mean\_m}_{i,c}=\frac{1}{m}\sum_{r=0}^{m-1}Y_{i,c-r},
+cases\_roll\_mean\_m_{i,c}=\frac{1}{m}\sum_{r=0}^{m-1}Y_{i,c-r},
 \qquad
-\text{cases\_roll\_max\_m}_{i,c}=\max_{0\leq r<m}Y_{i,c-r}.
+cases\_roll\_max\_m_{i,c}=\max_{0\leq r<m}Y_{i,c-r}.
 $$
+
 
 Essas variáveis resumem nível, persistência e intensidade recente. Além das médias e máximos, o código calcula tendência logarítmica recente por regressão linear em `log1p(casos)`, aceleração logarítmica, sinal da tendência e uma razão de momentum entre as duas últimas semanas e as duas semanas anteriores. Esses termos buscam diferenciar séries em ascensão, queda ou estabilização no momento da origem.
 
@@ -53,23 +55,23 @@ A matriz também inclui `historical_mean`, `historical_median`, `seasonal_naive`
 O terceiro bloco representa fase da temporada e interação com horizonte. A semana alvo entra por seno e cosseno sazonais,
 
 $$
-\text{week\_sin}_{t}=\sin\left(2\pi w(t)/52\right),
+week\_sin_{t}=\sin\left(2\pi w(t)/52\right),
 \qquad
-\text{week\_cos}_{t}=\cos\left(2\pi w(t)/52\right),
+week\_cos_{t}=\cos\left(2\pi w(t)/52\right),
 $$
 
 além dos indicadores `phase_start`, `phase_peak` e `phase_tail`. O horizonte `h` também entra diretamente, e a pipeline cria interações como `horizon_x_weeks_to_peak`, `horizon_x_phase_peak` e `epidemic_intensity`. A intensidade epidêmica é definida, quando possível, como a razão entre o máximo recente de quatro semanas e o quantil histórico 90 da semana alvo:
 
 $$
-\text{epidemic\_intensity}_{i,c,t}=\frac{\text{cases\_roll\_max\_4}_{i,c}}{Q_{0.90,i,w(t),c}^{hist}+1}.
+epidemic\_intensity_{i,c,t}=\frac{\text{cases\_roll\_max\_4}_{i,c}}{Q_{0.90,i,w(t),c}^{hist}+1}.
 $$
 
 O quarto bloco descreve pressão espacial. Nos desafios municipais, a matriz inclui agregados da região de saúde, macroregião de saúde e UF, com lags, médias móveis e máximos recentes. Por exemplo,
 
 $$
-\text{regional\_cases\_max\_lag\_1}_{i,c}=\max_{j\in R(i)}Y_{j,c},
+regional\_cases\_max\_lag\_1_{i,c}=\max_{j\in R(i)}Y_{j,c},
 \qquad
-\text{macroregional\_cases\_roll\_max\_4}_{i,c}=\max_{0\leq r<4}\sum_{j\in M(i)}Y_{j,c-r}.
+macroregional\_cases\_roll\_max\_4_{i,c}=\max_{0\leq r<4}\sum_{j\in M(i)}Y_{j,c-r}.
 $$
 
 Nos desafios de UF, a pipeline usa agregados de macroregião aproximados pelo primeiro dígito do código da UF, como `macroregion_cases_sum`, `macroregion_cases_max`, `macroregion_incidence_mean` e `macroregion_incidence_max`, também transformados em lags e médias móveis. Para UFs também há variáveis de vizinhança geográfica derivadas de `src/spatial.py`, como casos e incidência média ou máxima nos vizinhos. Essas variáveis são úteis porque surtos arbovirais frequentemente têm estrutura espacial e temporal compartilhada.
