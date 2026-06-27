@@ -1,0 +1,12 @@
+feature,vif
+macroregion_cases_max_lag_1,1705.734822469521
+macroregion_cases_max_lag_2,1567.4648422264122
+cases_roll_mean_8,1091.8533041313658
+cases_roll_mean_12,1015.5910524470631
+macroregion_cases_sum_lag_8,524.7088487610561
+macroregion_incidence_max_roll_mean_8,175.30810899969867
+macroregion_cases_max_lag_4,92.42081700237671
+cases_roll_mean_4,30.780353406812157
+precip_tot_roll_mean_8,3.5678880742828567
+precip_last_year,2.6612814664398545
+macroregion_cases_max_roll_mean_4,1.7316384149138033

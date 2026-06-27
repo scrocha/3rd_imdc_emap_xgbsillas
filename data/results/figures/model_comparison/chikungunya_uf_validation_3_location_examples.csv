@@ -1,0 +1,5 @@
+location_code,location,wis,selection_model
+12,AC,3.5352930701182546,xgb_quantile_log1p
+13,AM,4.820965957206935,xgb_quantile_log1p
+31,MG,154.25904408362177,xgb_quantile_log1p
+51,MT,704.7959435643103,xgb_quantile_log1p
